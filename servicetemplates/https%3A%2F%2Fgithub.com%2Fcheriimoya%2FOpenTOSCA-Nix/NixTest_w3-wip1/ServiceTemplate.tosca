@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Definitions xmlns="http://docs.oasis-open.org/tosca/ns/2011/12" xmlns:winery="http://www.opentosca.org/winery/extensions/tosca/2013/02/12" xmlns:selfservice="http://www.eclipse.org/winery/model/selfservice" xmlns:testwineryopentoscaorg="http://test.winery.opentosca.org" targetNamespace="https://github.com/cheriimoya/OpenTOSCA-Nix" id="OpenTOSCANix-NixTest_w3-wip1">
+    <ServiceTemplate name="NixTest_w3-wip1" targetNamespace="https://github.com/cheriimoya/OpenTOSCA-Nix" id="NixTest_w3-wip1">
+        <TopologyTemplate>
+            <NodeTemplate xmlns:OpenTOSCANix="https://github.com/cheriimoya/OpenTOSCA-Nix" name="Nix_w1-wip1" minInstances="1" maxInstances="1" type="OpenTOSCANix:Nix_w1-wip1" id="Nix_w1-wip1_0" winery:x="704" winery:y="313"/>
+            <NodeTemplate xmlns:otntyIgeneral="http://opentosca.org/nodetypes" name="OpenStack" minInstances="1" maxInstances="1" type="otntyIgeneral:OpenStack_22-Victoria-w1" id="OpenStack_22-Victoria-w1_0" winery:x="352" winery:y="700">
+                <Properties>
+                    <Properties xmlns="http://www.example.org">
+                        <HypervisorEndpoint>https://idm02.bw-cloud.org:5000/v3</HypervisorEndpoint>
+                        <HypervisorApplicationID>get_input: HypervisorApplicationID</HypervisorApplicationID>
+                        <HypervisorApplicationSecret>get_input: HypervisorApplicationSecret</HypervisorApplicationSecret>
+                    </Properties>
+                </Properties>
+            </NodeTemplate>
+            <NodeTemplate xmlns:otntyIgeneral="http://opentosca.org/nodetypes" name="Ubuntu-VM" minInstances="1" maxInstances="1" type="otntyIgeneral:Ubuntu-VM_20.04-w1" id="Ubuntu-VM_20.04-w1_0" winery:x="352" winery:y="531">
+                <Properties>
+                    <Properties xmlns="http://www.example.org">
+                        <instanceRef/>
+                        <VMIP/>
+                        <VMInstanceID/>
+                        <VMType>m1.tiny</VMType>
+                        <VMUserName>ubuntu</VMUserName>
+                        <VMUserPassword>N/A</VMUserPassword>
+                        <VMPrivateKey>get_input: VMPrivateKey</VMPrivateKey>
+                        <VMPublicKey>N/A</VMPublicKey>
+                        <VMKeyPairName>tosca</VMKeyPairName>
+                    </Properties>
+                </Properties>
+            </NodeTemplate>
+            <NodeTemplate xmlns:OpenTOSCANix="https://github.com/cheriimoya/OpenTOSCA-Nix" name="neovim-nix_w2-wip1" minInstances="1" maxInstances="1" type="OpenTOSCANix:neovim-nix_w2-wip1" id="neovim-nix_w2-wip1_0" winery:x="352" winery:y="112">
+                <Properties>
+                    <Properties xmlns="http://www.example.org">
+                        <NixpkgsVersion>get_input: NixpkgsVersion</NixpkgsVersion>
+                    </Properties>
+                </Properties>
+            </NodeTemplate>
+            <RelationshipTemplate xmlns:ToscaBaseTypes="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaBaseTypes" name="HostedOn" type="ToscaBaseTypes:HostedOn" id="con_HostedOn_0">
+                <SourceElement ref="Nix_w1-wip1_0"/>
+                <TargetElement ref="Ubuntu-VM_20.04-w1_0"/>
+            </RelationshipTemplate>
+            <RelationshipTemplate xmlns:ToscaBaseTypes="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaBaseTypes" name="HostedOn" type="ToscaBaseTypes:HostedOn" id="con_HostedOn_1">
+                <SourceElement ref="Ubuntu-VM_20.04-w1_0"/>
+                <TargetElement ref="OpenStack_22-Victoria-w1_0"/>
+            </RelationshipTemplate>
+            <RelationshipTemplate xmlns:ToscaBaseTypes="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaBaseTypes" name="HostedOn" type="ToscaBaseTypes:HostedOn" id="con_HostedOn_2">
+                <SourceElement ref="neovim-nix_w2-wip1_0"/>
+                <TargetElement ref="Ubuntu-VM_20.04-w1_0"/>
+            </RelationshipTemplate>
+            <RelationshipTemplate xmlns:ToscaBaseTypes="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaBaseTypes" name="DependsOn" type="ToscaBaseTypes:DependsOn" id="con_DependsOn_0">
+                <SourceElement ref="neovim-nix_w2-wip1_0"/>
+                <TargetElement ref="Nix_w1-wip1_0"/>
+            </RelationshipTemplate>
+        </TopologyTemplate>
+    </ServiceTemplate>
+</Definitions>
